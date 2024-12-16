@@ -8,6 +8,12 @@ import com.ikhdaamel.ucp2.repository.RepoDosen
 class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
     var uiState by mutableStateOf(DosenUiState())
 
+    fun updateState(dosenEvent: DosenEvent){
+        uiState = uiState.copy(
+            dosenEvent = dosenEvent
+        )
+    }
+
     private fun validateFields(): Boolean {
         val event = uiState.dosenEvent
         val errorState = FormErrorState(
