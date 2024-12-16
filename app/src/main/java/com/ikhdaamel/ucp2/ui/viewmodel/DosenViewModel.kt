@@ -2,6 +2,7 @@ package com.ikhdaamel.ucp2.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ikhdaamel.ucp2.data.entity.Dosen
@@ -24,6 +25,7 @@ class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
             nama = if (event.nama.isNotEmpty()) null else "Nama harus diisi",
             jeniKelamin = if (event.jeniKelamin.isNotEmpty()) null else "Jenis Kelamin harus diisi",
         )
+        return TODO("Provide the return value")
     }
 
     fun saveData(){
