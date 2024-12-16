@@ -48,6 +48,9 @@ class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
                 SnackBarMessage = "Input Tidak Valid, Periksa Data"
             )
         }
+        fun resetSnackBarMessage(){
+            uiState = uiState.copy(SnackBarMessage = null)
+        }
     }
 
 }
