@@ -2,6 +2,12 @@ package com.ikhdaamel.ucp2.ui.viewmodel
 
 import com.ikhdaamel.ucp2.data.entity.Dosen
 
+data class DosenUiState(
+    val dosenEvent: DosenEvent = DosenEvent(),
+    val isEntryValid: FormErrorState = FormErrorState(),
+    val SnackBarMessage: String? = null,
+)
+
 data class FormErrorState(
     val nidn: String? = null,
     val nama: String? = null,
