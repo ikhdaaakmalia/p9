@@ -1,5 +1,6 @@
 package com.ikhdaamel.ucp2.data.dao
 
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -17,4 +18,7 @@ interface MataKuliahDao {
 
     @Update
     suspend fun updateMataKuliah(mataKuliah: MataKuliah)
+
+    @Delete
+    suspend fun deleteMataKuliah (mataKuliah: MataKuliah)
 }
