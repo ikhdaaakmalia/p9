@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DosenDao {
-    @Query("select * from Dosen")
+
+    @Query("select * from Dosen order by nama ASC")
     fun getAllDosen() : Flow<List<Dosen>>
 }
