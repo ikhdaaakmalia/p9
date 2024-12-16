@@ -1,5 +1,6 @@
 package com.ikhdaamel.ucp2.ui.viewmodel
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +22,7 @@ class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
         val errorState = FormErrorState(
             nidn = if (event.nidn.isNotEmpty()) null else "NIDN harus diisi",
             nama = if (event.nama.isNotEmpty()) null else "Nama harus diisi",
-            jeniKelamin = if (event.jenisKelamin.isNotEmpty()) null else "Jenis Kelamin harus diisi",
+            jeniKelamin = if (event.jeniKelamin.isNotEmpty()) null else "Jenis Kelamin harus diisi",
         )
     }
 
@@ -32,7 +33,7 @@ class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
                 try {
                     repoDosen.insertDosen(currentEvent.toDosenEntity())
                     uiState = uiState.copy(
-                        SnackBaraMessage = "Data Tersimpan",
+                        SnackBarMessage = "Data Tersimpan",
                         dosenEvent = DosenEvent(),
                         isEntryValid = FormErrorState()
                     )
