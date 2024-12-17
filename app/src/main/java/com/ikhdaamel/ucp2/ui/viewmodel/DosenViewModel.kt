@@ -25,7 +25,8 @@ class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
             nama = if (event.nama.isNotEmpty()) null else "Nama harus diisi",
             jeniKelamin = if (event.jeniKelamin.isNotEmpty()) null else "Jenis Kelamin harus diisi",
         )
-        return TODO("Provide the return value")
+        uiState = uiState.copy(isEntryValid = errorState)
+        return errorState.isValid()
     }
 
     fun saveData(){
