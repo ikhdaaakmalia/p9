@@ -2,7 +2,13 @@ package com.ikhdaamel.ucp2.ui.viewmodel
 
 import com.ikhdaamel.ucp2.data.entity.MataKuliah
 
-data class FormErrorState(
+data class MatKulUiState(
+    val mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
+    val isEntryValid: formErrorState = formErrorState(),
+    val SnackBarMessage: String? = null,
+)
+
+data class formErrorState(
     val kode: String? = null,
     val nama_mk: String? = null,
     val sks: String? = null,
