@@ -1,9 +1,13 @@
 package com.ikhdaamel.ucp2.ui.viewmodel
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ikhdaamel.ucp2.data.entity.MataKuliah
 import com.ikhdaamel.ucp2.repository.RepoMataKuliah
+import kotlinx.coroutines.launch
 
 class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel(){
     var uiState by mutableStateOf(MatKulUiState())
@@ -24,8 +28,36 @@ class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel
             jenis = if (event.jenis.isNotEmpty()) null else "Jenis Mata Kuliah harus diisi",
             dosenPengampu = if (event.dosenPengampu.isNotEmpty()) null else "Dosen Pengampu harus diisi",
         )
-        uiState = uiState(isEntryValid = errorState)
+        uiState = uiState.copy(isEntryValid = errorState)
         return errorState.isValid()
+    }
+
+    fun saveData() {
+        val currentEvent = uiState.mataKuliahEvent
+        if (validateFields()) {
+            viewModelScope.launch {
+                try {
+                    repoMataKuliah.insertMataKuliah(currentEvent.toMataKuliahEntity())
+                    uiState = uiState.copy(
+                        SnackBarMessage = "Data Tersimpan",
+                        mataKuliahEvent = MataKuliahEvent(),
+                        isEntryValid = formErrorState()
+                    )
+                } catch (e: Exception) {
+                    uiState = uiState.copy(
+                        SnackBarMessage = "Data Tidak tersimpan"
+                    )
+                }
+            }
+        } else {
+            uiState = uiState.copy(
+                SnackBarMessage = "Input Tidak Valid, Periksa Data"
+            )
+        }
+    }
+
+    fun resetSnackBarMessage() {
+        uiState = uiState.copy(SnackBarMessage = null)
     }
 }
 
