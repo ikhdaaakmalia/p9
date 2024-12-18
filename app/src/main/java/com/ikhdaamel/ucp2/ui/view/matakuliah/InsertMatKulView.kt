@@ -1,5 +1,6 @@
 package com.ikhdaamel.ucp2.ui.view.matakuliah
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -122,6 +124,9 @@ fun FormMataKuliah(
     onValueChange: (MataKuliahEvent) -> Unit = {},
     errorState: MatKulFormErrorState = MatKulFormErrorState(),
     modifier: Modifier = Modifier
+        .fillMaxSize()
+        .background(Color(0xE4931743))
+        .padding(10.dp)
 ){
     val sks = listOf("1", "2", "3")
     val semester = listOf("1", "3", "5", "7")
@@ -139,7 +144,7 @@ fun FormMataKuliah(
             onValueChange = {
                 onValueChange(mataKuliahEvent.copy(kode = it))
             },
-            label = { Text("Kode") },
+            label = { Text("Masukkan Kode Mata Kuliah") },
             isError = errorState.kode != null,
             placeholder = { Text("Masukkan Kode") }
         )
@@ -162,9 +167,12 @@ fun FormMataKuliah(
             color = Color.Red
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Jumlah SKS")
+        Text(
+            text = "Jumlah SKS",
+            fontWeight = FontWeight.Bold)
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
             sks.forEach{ sks ->
                 Row (
@@ -182,7 +190,9 @@ fun FormMataKuliah(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Semester")
+        Text(
+            text = "Semester",
+            fontWeight = FontWeight.Bold)
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -202,7 +212,9 @@ fun FormMataKuliah(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Jenis Mata Kuliah")
+        Text(
+            text = "Jenis Mata Kuliah",
+            fontWeight = FontWeight.Bold)
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -222,7 +234,9 @@ fun FormMataKuliah(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Pilih Dosen Pengampu")
+        Text(
+            text = "Pilih Dosen Pengampu",
+            fontWeight = FontWeight.Bold)
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded }

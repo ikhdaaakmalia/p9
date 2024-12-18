@@ -1,5 +1,6 @@
 package com.ikhdaamel.ucp2.ui.view.dosen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -114,6 +115,9 @@ fun FormDosen(
     onValueChange: (DosenEvent) -> Unit = {},
     errorState: DosenFormErrorState = DosenFormErrorState(),
     modifier: Modifier = Modifier
+        .fillMaxSize()
+        .background(Color(0xE4931743))
+        .padding(10.dp)
 ) {
     val jenisKelamin = listOf("laki-laki", "Perempuan")
 
@@ -125,7 +129,7 @@ fun FormDosen(
             onValueChange = {
                 onValueChange(dosenEvent.copy(nidn = it))
             },
-            label = { Text("NIDN") },
+            label = { Text("Masukkan Nomor NIDN") },
             isError = errorState.nidn != null,
             placeholder = { Text("Masukkan NIDN") },
         )
@@ -139,9 +143,9 @@ fun FormDosen(
             onValueChange = {
                 onValueChange(dosenEvent.copy(nama = it))
             },
-            label = { Text("Nama") },
+            label = { Text("Masukkan Nama lengkap") },
             isError = errorState.nama != null,
-            placeholder = { Text("Masukkan Nama Lengkap") },
+            placeholder = { Text("Nama") },
         )
         Text(
             text = errorState.nama ?: "",
