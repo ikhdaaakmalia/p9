@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.viewmodel
+package com.ikhdaamel.ucp2.ui.viewmodel.matakuliah
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

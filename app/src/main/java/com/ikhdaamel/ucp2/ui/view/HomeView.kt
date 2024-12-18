@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.view.dosen
+package com.ikhdaamel.ucp2.ui.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -62,7 +62,7 @@ fun HomeView(){
                     contentDescription = "Dosen Icon",
                     modifier = Modifier.size(24.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp)) // Space between icon and text
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "Dosen")
             }
             Button(
@@ -76,7 +76,7 @@ fun HomeView(){
                     contentDescription = "Mata Kuliah Icon",
                     modifier = Modifier.size(24.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp)) // Space between icon and text
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "Mata Kuliah")
             }
         }

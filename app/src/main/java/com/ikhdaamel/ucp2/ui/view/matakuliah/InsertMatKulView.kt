@@ -35,10 +35,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
-import com.ikhdaamel.ucp2.ui.viewmodel.MatKulFormErrorState
-import com.ikhdaamel.ucp2.ui.viewmodel.MatKulUiState
-import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahEvent
-import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahViewModel
+import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulFormErrorState
+import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulUiState
+import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MataKuliahEvent
+import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MataKuliahViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -124,9 +124,6 @@ fun FormMataKuliah(
     onValueChange: (MataKuliahEvent) -> Unit = {},
     errorState: MatKulFormErrorState = MatKulFormErrorState(),
     modifier: Modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0xE4931743))
-        .padding(10.dp)
 ){
     val sks = listOf("1", "2", "3")
     val semester = listOf("1", "3", "5", "7")
@@ -136,7 +133,10 @@ fun FormMataKuliah(
     var expanded by remember { mutableStateOf(false) }
     var selectedDosen by remember { mutableStateOf("") }
 
-    Column (modifier = modifier.fillMaxWidth())
+    Column (modifier = modifier
+        .fillMaxWidth()
+        .background(Color(0xE4931743))
+        .padding(10.dp))
     {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
