@@ -6,10 +6,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +28,7 @@ import com.ikhdaamel.ucp2.ui.viewmodel.FormErrorState
 import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahEvent
 import com.ikhdaamel.ucp2.ui.viewmodel.formErrorState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun FormMataKuliah(
@@ -27,11 +37,13 @@ fun FormMataKuliah(
     errorState: formErrorState = formErrorState(),
     modifier: Modifier = Modifier
 ){
-
     val sks = listOf("1", "2", "3")
     val semester = listOf("1", "3", "5", "7")
     val jenis = listOf("wajib", "peminatan")
+    val dosenPengampu = listOf("Arif, S.Kom.,M.Kom", "Junaedi S.Kom.,M.Kom., Ph.d", "Wawan S.Kom., M.Kom,")
 
+    var expanded by remember { mutableStateOf(false) }
+    var selectedDosen by remember { mutableStateOf("") }
 
     Column (modifier = modifier.fillMaxWidth())
     {
@@ -122,6 +134,47 @@ fun FormMataKuliah(
                     Text (text = jn)
                 }
             }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Pilih Dosen Pengampu")
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+        ) {
+            OutlinedTextField(
+                value = selectedDosen,
+                onValueChange = {},
+                readOnly = true,
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth(),
+                label = { Text("Dosen Pengampu") },
+                placeholder = { Text("Pilih Dosen") },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                isError = errorState.kode != null
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                dosenPengampu.forEach { dosen ->
+                    DropdownMenuItem(
+                        text = { Text(dosen) },
+                        onClick = {
+                            selectedDosen = dosen
+                            onValueChange(mataKuliahEvent.copy(kode = dosen)) // Update state
+                            expanded = false
+                        }
+                    )
+                }
+            }
+            Text(
+                text = errorState.kode ?: "",
+                color = Color.Red,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
     }
 }
