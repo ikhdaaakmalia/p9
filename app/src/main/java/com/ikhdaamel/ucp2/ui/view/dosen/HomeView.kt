@@ -32,7 +32,7 @@ fun HomeView(){
     Column (
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFD1DC))
+            .background(Color(0xE4931743))
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
