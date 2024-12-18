@@ -62,9 +62,9 @@ fun InsertDosenView(
                 .padding(16.dp)
         ){
             TopAppBar(
-                onBack = onBack,
-                showBackButton = true,
-                judul = "Tambah Dosen"
+              onBack = onBack,
+              showBackButton = true,
+              judul = "Tambah Dosen"
             )
             InsertBodyDosen(
                 uiState = uiState,
