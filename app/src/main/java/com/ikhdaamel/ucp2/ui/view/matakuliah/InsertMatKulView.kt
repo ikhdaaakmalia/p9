@@ -33,11 +33,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
-import com.ikhdaamel.ucp2.ui.viewmodel.FormErrorState
+import com.ikhdaamel.ucp2.ui.viewmodel.MatKulFormErrorState
 import com.ikhdaamel.ucp2.ui.viewmodel.MatKulUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahEvent
 import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.formErrorState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -121,7 +120,7 @@ fun InsertBodyMatKul(
 fun FormMataKuliah(
     mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
     onValueChange: (MataKuliahEvent) -> Unit = {},
-    errorState: formErrorState = formErrorState(),
+    errorState: MatKulFormErrorState = MatKulFormErrorState(),
     modifier: Modifier = Modifier
 ){
     val sks = listOf("1", "2", "3")

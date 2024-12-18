@@ -9,6 +9,7 @@ import com.ikhdaamel.ucp2.data.entity.MataKuliah
 import com.ikhdaamel.ucp2.repository.RepoMataKuliah
 import kotlinx.coroutines.launch
 
+
 class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel(){
     var uiState by mutableStateOf(MatKulUiState())
 
@@ -20,7 +21,7 @@ class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel
 
     private fun validateFields(): Boolean{
         val event = uiState.mataKuliahEvent
-        val errorState = formErrorState(
+        val errorState = MatKulFormErrorState(
             kode = if (event.kode.isNotEmpty()) null else "Kode harus diisi",
             nama_mk = if (event.nama_mk.isNotEmpty()) null else "Nama Mata Kuliah harus diisi",
             sks = if (event.sks.isNotEmpty()) null else "SKS harus diisi",
@@ -41,7 +42,7 @@ class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel
                     uiState = uiState.copy(
                         SnackBarMessage = "Data Tersimpan",
                         mataKuliahEvent = MataKuliahEvent(),
-                        isEntryValid = formErrorState()
+                        isEntryValid = MatKulFormErrorState()
                     )
                 } catch (e: Exception) {
                     uiState = uiState.copy(
@@ -63,11 +64,11 @@ class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel
 
 data class MatKulUiState(
     val mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
-    val isEntryValid: formErrorState = formErrorState(),
+    val isEntryValid: MatKulFormErrorState = MatKulFormErrorState(),
     val SnackBarMessage: String? = null,
 )
 
-data class formErrorState(
+data class MatKulFormErrorState(
     val kode: String? = null,
     val nama_mk: String? = null,
     val sks: String? = null,

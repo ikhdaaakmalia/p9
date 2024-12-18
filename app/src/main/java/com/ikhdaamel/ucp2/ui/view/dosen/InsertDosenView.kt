@@ -29,7 +29,7 @@ import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
 import com.ikhdaamel.ucp2.ui.viewmodel.DosenEvent
 import com.ikhdaamel.ucp2.ui.viewmodel.DosenUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.DosenViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.FormErrorState
+import com.ikhdaamel.ucp2.ui.viewmodel.DosenFormErrorState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -112,7 +112,7 @@ fun InsertBodyDosen(
 fun FormDosen(
     dosenEvent: DosenEvent = DosenEvent(),
     onValueChange: (DosenEvent) -> Unit = {},
-    errorState: FormErrorState = FormErrorState(),
+    errorState: DosenFormErrorState = DosenFormErrorState(),
     modifier: Modifier = Modifier
 ) {
     val jenisKelamin = listOf("laki-laki", "Perempuan")

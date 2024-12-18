@@ -20,7 +20,7 @@ class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
 
     private fun validateFields(): Boolean {
         val event = uiState.dosenEvent
-        val errorState = FormErrorState(
+        val errorState = DosenFormErrorState(
             nidn = if (event.nidn.isNotEmpty()) null else "NIDN harus diisi",
             nama = if (event.nama.isNotEmpty()) null else "Nama harus diisi",
             jeniKelamin = if (event.jeniKelamin.isNotEmpty()) null else "Jenis Kelamin harus diisi",
@@ -38,7 +38,7 @@ class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
                     uiState = uiState.copy(
                         SnackBarMessage = "Data Tersimpan",
                         dosenEvent = DosenEvent(),
-                        isEntryValid = FormErrorState()
+                        isEntryValid = DosenFormErrorState()
                     )
                 } catch (e: Exception) {
                     uiState = uiState.copy(
@@ -59,11 +59,11 @@ class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
 
 data class DosenUiState(
     val dosenEvent: DosenEvent = DosenEvent(),
-    val isEntryValid: FormErrorState = FormErrorState(),
+    val isEntryValid: DosenFormErrorState = DosenFormErrorState(),
     val SnackBarMessage: String? = null,
 )
 
-data class FormErrorState(
+data class DosenFormErrorState(
     val nidn: String? = null,
     val nama: String? = null,
     val jeniKelamin: String? = null,
