@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -25,8 +26,36 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ikhdaamel.ucp2.ui.viewmodel.FormErrorState
+import com.ikhdaamel.ucp2.ui.viewmodel.MatKulUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahEvent
 import com.ikhdaamel.ucp2.ui.viewmodel.formErrorState
+
+@Composable
+fun InsertBodyMatKul(
+    modifier: Modifier = Modifier,
+    onValueChange: (MataKuliahEvent) -> Unit,
+    uiState: MatKulUiState,
+    onClick: () -> Unit
+){
+    Column (
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment =  Alignment.CenterHorizontally
+    ){
+        FormMataKuliah(
+            mataKuliahEvent = uiState.mataKuliahEvent,
+            onValueChange = onValueChange,
+            errorState = uiState.isEntryValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Simpan")
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
