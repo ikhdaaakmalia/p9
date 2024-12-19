@@ -62,10 +62,10 @@ class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel
     }
 }
 
-data class MatKulUiState(
+data class MataKulUiState(
     val mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
     val isEntryValid: MatKulFormErrorState = MatKulFormErrorState(),
-    val SnackBarMessage: String? = null,
+    val snackBarMessage: String? = null,
 )
 
 data class MatKulFormErrorState(
