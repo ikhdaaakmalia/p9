@@ -32,7 +32,7 @@ fun TopAppBar(
                 ) {
                     Text("kembali")
                 }
-                Spacer(modifier = Modifier.weight(1f)) // Correct usage of weight
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
 
@@ -40,7 +40,7 @@ fun TopAppBar(
             text = judul,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Center) // Correct usage of align
+            modifier = Modifier.align(Alignment.Center)
         )
     }
 }
