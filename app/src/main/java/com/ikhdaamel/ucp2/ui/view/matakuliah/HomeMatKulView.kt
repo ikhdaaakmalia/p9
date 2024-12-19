@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
@@ -24,6 +25,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ikhdaamel.ucp2.data.entity.MataKuliah
+
+@Composable
+fun ListMataKuliah(
+    listMatKul: List<MataKuliah>,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = {}
+){
+    LazyColumn (modifier = modifier)
+    {
+        items(
+            items = listMatKul,
+            itemContent = {matkul ->
+                CardMataKuliah(
+                    matkul = matkul,
+                    onClick = {onClick(matkul.kode_mk)}
+                )
+            }
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
