@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
+import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
 import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenEvent
 import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenViewModel
@@ -38,7 +39,7 @@ fun InsertDosenView(
     onBack: () -> Unit,
     onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DosenViewModel = viewModel()
+    viewModel: DosenViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val uiState = viewModel.uiState
     val SnackbarHostState = remember { SnackbarHostState() }

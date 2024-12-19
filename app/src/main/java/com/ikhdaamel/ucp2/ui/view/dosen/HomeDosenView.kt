@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.data.entity.Dosen
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
+import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
 import com.ikhdaamel.ucp2.ui.viewmodel.dosen.HomeDosenUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.dosen.HomeDosenViewModel
 import kotlinx.coroutines.launch
@@ -45,7 +46,7 @@ import kotlin.random.Random
 
 @Composable
 fun HomeDosenView(
-    viewModel: HomeDosenViewModel = viewModel(),
+    viewModel: HomeDosenViewModel = viewModel(factory = PenyediaViewModel.Factory),
     onAddDsn: () -> Unit = { },
     onDetailClick: (String) -> Unit = { },
     modifier: Modifier = Modifier

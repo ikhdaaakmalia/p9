@@ -41,13 +41,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.data.entity.MataKuliah
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
+import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.HomeMatKulUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.HomeMatKulViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeMatKulView(
-    viewModel: HomeMatKulViewModel = viewModel (),
+    viewModel: HomeMatKulViewModel = viewModel (factory = PenyediaViewModel.Factory),
     onAddMatKul: () -> Unit = {},
     onDetailClick: (String) -> Unit = {},
     modifier: Modifier = Modifier

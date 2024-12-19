@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.UpdateMatKulViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -26,7 +27,7 @@ fun updateMatKulView(
     onBack: () -> Unit,
     onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: UpdateMatKulViewModel = viewModel()
+    viewModel: UpdateMatKulViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val uiState = viewModel.updateUiState
     val snackbarHostState = remember { SnackbarHostState() }

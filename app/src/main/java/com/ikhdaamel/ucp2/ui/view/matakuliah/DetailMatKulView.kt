@@ -39,11 +39,12 @@ import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.DetailMatKulViewModel
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulDetailUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.toMataKuliahEntity
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
+import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
 
 @Composable
 fun DetailMatKulView(
     modifier: Modifier = Modifier,
-    viewModel: DetailMatKulViewModel = viewModel(),
+    viewModel: DetailMatKulViewModel = viewModel(factory = PenyediaViewModel.Factory),
     onBack: () -> Unit = {},
     onEditClick: (String) ->Unit = {},
     onDeleteClick: () -> Unit = {}

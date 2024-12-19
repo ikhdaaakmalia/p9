@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
+import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulFormErrorState
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MataKuliahEvent
@@ -46,7 +47,7 @@ fun InsertMatKulView(
     onBack: () -> Unit,
     onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: MataKuliahViewModel = viewModel()
+    viewModel: MataKuliahViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val uiState = viewModel.uiState
     val SnackbarHostState = remember { SnackbarHostState() }
