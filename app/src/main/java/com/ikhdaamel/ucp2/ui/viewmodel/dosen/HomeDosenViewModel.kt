@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ikhdaamel.ucp2.data.entity.Dosen
 import com.ikhdaamel.ucp2.repository.RepoDosen
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 
 class HomeDosenViewModel(
     private val repoDosen: RepoDosen
+
 ): ViewModel() {
     val homeDosenUiState: StateFlow<HomeDosenUiState> = repoDosen.getAllDosen()
         .filterNotNull()
