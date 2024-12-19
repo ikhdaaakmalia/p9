@@ -91,7 +91,7 @@ fun BodyHomeDosenView(
     modifier: Modifier = Modifier
 ){
     val coroutineScope = rememberCoroutineScope()
-    val SnackbarHostState = remember {SnackbarHostState()}
+    val snackbarHostState = remember {SnackbarHostState()}
     when{
         homeDosenUiState.isLoading -> {
             Box(
@@ -105,7 +105,7 @@ fun BodyHomeDosenView(
             LaunchedEffect(homeDosenUiState.errorMessage) {
                 homeDosenUiState.errorMessage?.let{ message ->
                     coroutineScope.launch {
-                        SnackbarHostState.showSnackbar(message)
+                        snackbarHostState.showSnackbar(message)
                     }
                 }
             }
