@@ -9,27 +9,27 @@ object DestinasiHome : AlamatNavigasi {
 }
 
 object DestinasiHomeDosen : AlamatNavigasi{
-    override val route = "Home Dosen"
+    override val route = "Home_Dosen"
     const val NIDN = "nidn"
-    val routesWithArg = "$route/ {$NIDN}"
+    val routesWithArg = "$route/{$NIDN}"
 }
 
 object DestinasiInsertDosen : AlamatNavigasi {
-    override val route = "Insert Dosen"
+    override val route = "Insert_Dosen"
 }
 
 object DestinasiInsertMataKuliah : AlamatNavigasi {
-    override val route: String = " Input Mata Kuliah"
+    override val route: String = " Input_Mata_Kuliah"
 }
 
 object DestinasiUpdate: AlamatNavigasi {
-    override val route = "Detail Mata Kuliah"
+    override val route = "Detail_Mata_Kuliah"
     const val KODE = "kode"
     val routesWithArg = "$route/{$KODE}"
 }
 
 object DestinasiDetailMatKul: AlamatNavigasi{
-    override val route = "Detail Mata Kuliah"
+    override val route = "Detail_Mata_Kuliah"
     const val KODE = "kode"
     val routeWithArg = "$route/{$KODE}"
 }
