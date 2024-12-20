@@ -86,5 +86,5 @@ class UpdateMatKulViewModel (
 }
 
 fun MataKuliah.toUiStateMatKul() : MatKulUiState = MatKulUiState(
-    mataKuliahEvent = this.toDetailUIEvent()
+    mataKuliahEvent = this.toDetailUiEvent()
 )

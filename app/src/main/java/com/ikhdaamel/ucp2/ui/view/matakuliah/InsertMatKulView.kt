@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
 import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
+import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenViewModel
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulFormErrorState
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulUiState
 import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MataKuliahEvent
@@ -124,7 +125,8 @@ fun FormMataKuliah(
     mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
     onValueChange: (MataKuliahEvent) -> Unit = {},
     errorState: MatKulFormErrorState = MatKulFormErrorState(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: DosenViewModel = viewModel()
 ){
     val sks = listOf("1", "2", "3")
     val semester = listOf("1", "3", "5", "7")

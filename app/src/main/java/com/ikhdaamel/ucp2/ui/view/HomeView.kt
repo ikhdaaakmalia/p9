@@ -25,10 +25,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 
-fun HomeView(){
+fun HomeView(
+    onNavigateToDosen: () -> Unit,
+    onNavigateToMatkul: () -> Unit,
+    modifier: Modifier = Modifier
+){
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +56,7 @@ fun HomeView(){
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
             Button(
-                onClick = {  },
+                onClick = { onNavigateToDosen() },
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 10.dp)
@@ -66,7 +70,7 @@ fun HomeView(){
                 Text(text = "Dosen")
             }
             Button(
-                onClick = {  },
+                onClick = { onNavigateToMatkul() },
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 10.dp)
