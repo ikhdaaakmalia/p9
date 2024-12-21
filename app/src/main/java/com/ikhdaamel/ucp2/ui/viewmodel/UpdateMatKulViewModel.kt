@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.viewmodel.matakuliah
+package com.ikhdaamel.ucp2.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,10 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.ikhdaamel.ucp2.data.entity.MataKuliah
 import com.ikhdaamel.ucp2.repository.RepoMataKuliah
 import com.ikhdaamel.ucp2.ui.navigation.DestinasiUpdate
-import com.ikhdaamel.ucp2.ui.viewmodel.HomeMataKulUiState
-import com.ikhdaamel.ucp2.ui.viewmodel.MatKulFormErrorState
-import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahEvent
-import com.ikhdaamel.ucp2.ui.viewmodel.toMataKuliahEntity
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

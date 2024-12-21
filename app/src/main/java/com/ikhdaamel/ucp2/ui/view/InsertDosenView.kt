@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.view.dosen
+package com.ikhdaamel.ucp2.ui.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
