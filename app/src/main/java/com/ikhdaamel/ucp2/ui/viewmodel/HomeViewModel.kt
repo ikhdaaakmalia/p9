@@ -2,6 +2,8 @@ package com.ikhdaamel.ucp2.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ikhdaamel.ucp2.data.entity.Dosen
+import com.ikhdaamel.ucp2.data.entity.MataKuliah
 import com.ikhdaamel.ucp2.repository.RepoDosen
 import com.ikhdaamel.ucp2.repository.RepoMataKuliah
 import kotlinx.coroutines.delay
@@ -17,30 +19,37 @@ class HomeViewModel(
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
     init {
-        viewModelScope.launch {
-            repoDosen.getAllDosen()
-                .onStart {
-                    _homeUiState.value = HomeUiState(isLoading = true)
-                    delay(900)
-                }
-                .catch { exception ->
-                    _homeUiState.value = HomeUiState(
-                        isLoading = false,
-                        isError = true,
-                        errorMessage = exception.message ?: "Ada Yang Salah"
-                    )
-                }
-                .collect { dosenList ->
-                    _homeUiState.value = HomeUiState(
-                        isLoading = false,
-                        isError = false
-                    )
-                }
-        }
+        fetchData()
     }
+
+    private fun fetchData(){
+        _homeUiState.value = _homeUiState.value.copy(isLoading = true)
+        viewModelScope.launch {
+            try {
+                val listDosen = repoDosen.getAllDosen().first()
+                val listMatKul = repoMataKuliah.getAllMataKuliah().first()
+
+                _homeUiState.value = _homeUiState.value.copy(
+                    listDosen = listDosen,
+                    listMatKul = listMatKul,
+                    isLoading = false
+                )
+            } catch (e: Exception) {
+                _homeUiState.value = _homeUiState.value.copy(
+                    isLoading = false,
+                    isError = true,
+                    errorMessage = "Ada Yang Salah"
+                )
+            }
+        }
+
+    }
+
 }
 
 data class HomeUiState(
+    val listDosen : List<Dosen> = emptyList(),
+    val listMatKul: List<MataKuliah> = listOf(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val errorMessage: String = ""
