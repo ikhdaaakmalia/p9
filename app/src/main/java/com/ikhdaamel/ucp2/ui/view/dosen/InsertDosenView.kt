@@ -28,33 +28,32 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
 import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenEvent
-import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenUiState
-import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenFormErrorState
+import com.ikhdaamel.ucp2.ui.viewmodel.DosenEvent
+import com.ikhdaamel.ucp2.ui.viewmodel.DosenViewModel
+import com.ikhdaamel.ucp2.ui.viewmodel.DosenFormErrorState
 import kotlinx.coroutines.launch
 
 @Composable
 fun InsertDosenView(
     onBack: () -> Unit,
-    onNavigate: () -> Unit,
+    onNavigateToDosen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DosenViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
-    val uiState = viewModel.uiState
-    val SnackbarHostState = remember { SnackbarHostState() }
+    val homeUiState = viewModel.homeUiState
+    val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-    LaunchedEffect(uiState.SnackBarMessage) {
-        uiState.SnackBarMessage?.let { message: String ->
+    LaunchedEffect(homeUiState.SnackBarMessage) {
+        homeUiState.SnackBarMessage?.let { message: String ->
             coroutineScope.launch {
-                SnackbarHostState.showSnackbar(message)
+                snackbarHostState.showSnackbar(message)
                 viewModel.resetSnackBarMessage()
             }
         }
     }
     Scaffold (
         modifier = modifier,
-        snackbarHost  = { SnackbarHost(hostState = SnackbarHostState) }
+        snackbarHost  = { SnackbarHost(hostState = snackbarHostState) }
     ) {
         padding ->
         Column (
@@ -68,44 +67,23 @@ fun InsertDosenView(
               showBackButton = true,
               judul = "Tambah Dosen"
             )
-            InsertBodyDosen(
-                uiState = uiState,
-                onValueChange = {updateEvent ->
-                    viewModel.updateState(updateEvent)
-                },
+            FormDosen(
+                dosenEvent = homeUiState.dosenEvent,
+                onValueChange = { viewModel.updateState(it) },
+                errorState = homeUiState.isEntryValid,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Button(
                 onClick = {
                     viewModel.saveData()
-                    onNavigate()
-                }
-            )
-        }
-    }
-}
-
-@Composable
-fun InsertBodyDosen(
-    modifier: Modifier = Modifier,
-    onValueChange: (DosenEvent) -> Unit,
-    uiState: DosenUiState,
-    onClick: () -> Unit
-) {
-    Column (
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        FormDosen(
-            dosenEvent = uiState.dosenEvent,
-            onValueChange = onValueChange,
-            errorState = uiState.isEntryValid,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Button(
-            onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
+                    onNavigateToDosen()
+                },
+                modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("Simpan")
+                Text("Simpan")
+            }
         }
+
     }
 }
 
