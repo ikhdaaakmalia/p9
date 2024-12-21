@@ -2,7 +2,6 @@ package com.ikhdaamel.ucp2.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
@@ -10,11 +9,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.compose.composable
 import com.ikhdaamel.ucp2.ui.view.HomeView
-import com.ikhdaamel.ucp2.ui.view.dosen.HomeDosenView
-import com.ikhdaamel.ucp2.ui.view.dosen.InsertDosenView
-import com.ikhdaamel.ucp2.ui.view.matakuliah.DetailMatKulView
-import com.ikhdaamel.ucp2.ui.view.matakuliah.InsertMatKulView
-import com.ikhdaamel.ucp2.ui.view.matakuliah.UpdateMatKulView
+import com.ikhdaamel.ucp2.ui.view.InsertDosenView
+import com.ikhdaamel.ucp2.ui.view.DetailMatKulView
+import com.ikhdaamel.ucp2.ui.view.InsertMatKulView
+import com.ikhdaamel.ucp2.ui.view.UpdateMatKulView
 
 
 
@@ -35,26 +33,41 @@ fun PengelolaHalaman (
                     navController.navigate(DestinasiHomeDosen.route)
                 },
                 onNavigateToMatkul = {
-                    navController.navigate(DestinasiInsertMataKuliah.route)
+                    navController.navigate(DestinasiHomeMatKul.route)
                 },
                 modifier = modifier
             )
         }
 
-        //home dosen
-        composable(
-            route = DestinasiHomeDosen.route
-        ){
-            HomeDosenView(onDetailClick = {nidn ->
-                navController.navigate("${DestinasiHomeDosen.route}/$nidn")
-                println("Pengelola Halaman: nim = $nidn")
-            },
-                onAddDsn = {
-                    navController.navigate(DestinasiHome.route)
-                },
-                modifier = modifier
-            )
-        }
+//        //home dosen
+//        composable(
+//            route = DestinasiHomeDosen.route
+//        ){
+//            HomeDosenView(onDetailClick = {nidn ->
+//                navController.navigate("${DestinasiHomeDosen.route}/$nidn")
+//                println("Pengelola Halaman: nidn = $nidn")
+//            },
+//                onAddDsn = {
+//                    navController.navigate(DestinasiHome.route)
+//                },
+//                modifier = modifier
+//            )
+//        }
+//
+//        //home matkul
+//        composable(
+//            route = DestinasiHomeMatKul.route
+//        ){
+//            HomeMatKulView(onDetailClick = {kode ->
+//                navController.navigate("${DestinasiHomeMatKul.route}/$kode")
+//                println("Pengelola Halaman: kode = $kode")
+//            },
+//                onAddMatKul = {
+//                    navController.navigate(DestinasiHome.route)
+//                },
+//                modifier = modifier
+//            )
+//        }
 
         //insert dosen
         composable(
@@ -64,7 +77,7 @@ fun PengelolaHalaman (
                 onBack = {
                     navController.popBackStack()
                 },
-                onNavigate = {
+                onNavigateToDosen = {
                     navController.popBackStack()
                 },
                 modifier = modifier
@@ -79,7 +92,7 @@ fun PengelolaHalaman (
                 onBack = {
                     navController.popBackStack()
                 },
-                onNavigate = {
+                onNavigateInMatkul = {
                     navController.popBackStack()
                 },
                 modifier = modifier
@@ -101,7 +114,7 @@ fun PengelolaHalaman (
                 onBack = {
                     navController.popBackStack()
                 },
-                onNavigate = {
+                onNavigateUpMatkul = {
                     navController.popBackStack()
                 },
                 modifier = modifier
