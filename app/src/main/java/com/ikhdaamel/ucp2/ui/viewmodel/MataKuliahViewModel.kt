@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.viewmodel.matakuliah
+package com.ikhdaamel.ucp2.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,11 +7,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ikhdaamel.ucp2.data.entity.MataKuliah
 import com.ikhdaamel.ucp2.repository.RepoMataKuliah
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
 class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel(){
-    var uiState by mutableStateOf(MatKulUiState())
+    var uiState by mutableStateOf(HomeMataKulUiState())
 
     fun updateState (mataKuliahEvent: MataKuliahEvent) {
         uiState = uiState.copy(
@@ -40,29 +48,62 @@ class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel
                 try {
                     repoMataKuliah.insertMataKuliah(currentEvent.toMataKuliahEntity())
                     uiState = uiState.copy(
-                        SnackBarMessage = "Data Tersimpan",
+                        snackBarMessage = "Data Tersimpan",
                         mataKuliahEvent = MataKuliahEvent(),
                         isEntryValid = MatKulFormErrorState()
                     )
                 } catch (e: Exception) {
                     uiState = uiState.copy(
-                        SnackBarMessage = "Data Tidak tersimpan"
+                        snackBarMessage = "Data Tidak tersimpan"
                     )
                 }
             }
         } else {
             uiState = uiState.copy(
-                SnackBarMessage = "Input Tidak Valid, Periksa Data"
+                snackBarMessage = "Input Tidak Valid, Periksa Data"
             )
         }
     }
 
     fun resetSnackBarMessage() {
-        uiState = uiState.copy(SnackBarMessage = null)
+        uiState = uiState.copy(snackBarMessage = null)
     }
+
+    val homeMatKulUiState: StateFlow<HomeMataKulUiState> = repoMataKuliah.getAllMataKuliah()
+        .filterNotNull()
+        .map {
+            HomeMataKulUiState(
+                listMatKul = it.toList(),
+                isLoading = false
+            )
+        }
+        .onStart {
+            emit(HomeMataKulUiState(isLoading = true))
+            delay(900)
+        }
+        .catch{
+            emit(
+                HomeMataKulUiState(
+                    isLoading = false,
+                    isError = true,
+                    errorMessage = it.message ?: "terjadi Kesalahan"
+                )
+            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = HomeMataKulUiState(
+                isLoading = true,
+            )
+        )
 }
 
-data class MataKulUiState(
+data class HomeMataKulUiState(
+    val listMatKul: List<MataKuliah> = listOf(),
+    val isLoading: Boolean =false,
+    val isError: Boolean = false,
+    val errorMessage: String ="",
     val mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
     val isEntryValid: MatKulFormErrorState = MatKulFormErrorState(),
     val snackBarMessage: String? = null,
