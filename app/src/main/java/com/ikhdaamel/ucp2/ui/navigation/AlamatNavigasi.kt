@@ -10,12 +10,18 @@ object DestinasiHome : AlamatNavigasi {
 
 object DestinasiHomeDosen : AlamatNavigasi{
     override val route = "Home_Dosen"
-    //const val NIDN = "nidn"
-    //val routesWithArg = "$route/{$NIDN}"
+//    const val NIDN = "nidn"
+//    val routesWithArg = "$route/{$NIDN}"
 }
 
 object DestinasiInsertDosen : AlamatNavigasi {
     override val route = "Insert_Dosen"
+}
+
+object DestinasiHomeMatKul : AlamatNavigasi{
+    override val route = "Home_Matkul"
+//    const val KODE = "kode"
+//    val routesWithArg = "$route/{$KODE}"
 }
 
 object DestinasiInsertMataKuliah : AlamatNavigasi {
