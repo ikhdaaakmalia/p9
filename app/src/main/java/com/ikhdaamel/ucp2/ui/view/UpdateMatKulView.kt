@@ -25,7 +25,7 @@ import com.ikhdaamel.ucp2.ui.viewmodel.UpdateMatKulViewModel
 @Composable
 fun UpdateMatKulView(
     onBack: () -> Unit,
-    onNavigateUpMatkul: () -> Unit,
+    onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UpdateMatKulViewModel = viewModel(factory = PenyediaViewModel.Factory),
     dosenViewModel: DosenViewModel = viewModel(factory = PenyediaViewModel.Factory)

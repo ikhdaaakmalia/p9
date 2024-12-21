@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeMatKulView(
     onBack: () -> Unit,
-    onNavigateInMataKuliah: () -> Unit,
+    onNavigateHome: () -> Unit,
     viewModel: MataKuliahViewModel = viewModel (factory = PenyediaViewModel.Factory),
     onAddMatKul: () -> Unit = {},
     onDetailClick: (String) -> Unit = {},

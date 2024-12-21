@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 
 fun HomeView(
-    onNavigateToDosen: () -> Unit,
-    onNavigateToMatkul: () -> Unit,
+    onNavigateDosen: () -> Unit,
+    onNavigateMatkul: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Column (
@@ -58,7 +58,7 @@ fun HomeView(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(
-                onClick = { onNavigateToDosen() },
+                onClick = { onNavigateDosen() },
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 10.dp)
@@ -72,7 +72,7 @@ fun HomeView(
                 Text(text = "Dosen")
             }
             Button(
-                onClick = { onNavigateToMatkul() },
+                onClick = { onNavigateMatkul() },
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 10.dp)

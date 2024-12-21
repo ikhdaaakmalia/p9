@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun InsertMatKulView(
     onBack: () -> Unit,
-    onNavigateInMatkul: () -> Unit,
+    onNavigate: () -> Unit,
     onAddMataKuliah: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: MataKuliahViewModel = viewModel(factory = PenyediaViewModel.Factory)
@@ -84,7 +84,7 @@ fun InsertMatKulView(
             )
             Button(
                 onClick = {viewModel.saveData()
-                          onNavigateInMatkul()},
+                    onNavigate()},
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("Simpan")

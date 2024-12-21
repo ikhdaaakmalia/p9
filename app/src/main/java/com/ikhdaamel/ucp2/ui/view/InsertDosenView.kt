@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun InsertDosenView(
     onBack: () -> Unit,
-    onNavigateToDosen: () -> Unit,
+    onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DosenViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
@@ -76,7 +76,7 @@ fun InsertDosenView(
             Button(
                 onClick = {
                     viewModel.saveData()
-                    onNavigateToDosen()
+                    onNavigate()
                 },
                 modifier = Modifier.fillMaxWidth(),
         ) {

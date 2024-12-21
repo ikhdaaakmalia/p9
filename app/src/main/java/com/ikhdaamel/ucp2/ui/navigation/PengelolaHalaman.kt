@@ -11,141 +11,109 @@ import androidx.navigation.compose.composable
 import com.ikhdaamel.ucp2.ui.view.HomeView
 import com.ikhdaamel.ucp2.ui.view.InsertDosenView
 import com.ikhdaamel.ucp2.ui.view.DetailMatKulView
+import com.ikhdaamel.ucp2.ui.view.HomeDosenView
+import com.ikhdaamel.ucp2.ui.view.HomeMatKulView
 import com.ikhdaamel.ucp2.ui.view.InsertMatKulView
 import com.ikhdaamel.ucp2.ui.view.UpdateMatKulView
 
-
-
 @Composable
-fun PengelolaHalaman (
+fun PengelolaHalaman(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
-){
+) {
     NavHost(
         navController = navController,
-        startDestination = DestinasiHome.route){
-        //home
-        composable(
-            route = DestinasiHome.route
-        ){
+        startDestination = DestinasiHome.route
+    ) {
+        // Home
+        composable(route = DestinasiHome.route) {
             HomeView(
-                onNavigateToDosen = {
+                onNavigateDosen = { navController.navigate(DestinasiHomeDosen.route) },
+                onNavigateMatkul = { navController.navigate(DestinasiHomeMatKul.route) },
+                modifier = modifier
+            )
+        }
+
+        //home dosen
+        composable(route = DestinasiHomeDosen.route) {
+            HomeDosenView(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onAddDsn = {
+                    navController.navigate(DestinasiInsertDosen.route)
+                },
+                onNavigateDosen = {
                     navController.navigate(DestinasiHomeDosen.route)
                 },
-                onNavigateToMatkul = {
-                    navController.navigate(DestinasiHomeMatKul.route)
-                },
                 modifier = modifier
             )
         }
 
-//        //home dosen
-//        composable(
-//            route = DestinasiHomeDosen.route
-//        ){
-//            HomeDosenView(onDetailClick = {nidn ->
-//                navController.navigate("${DestinasiHomeDosen.route}/$nidn")
-//                println("Pengelola Halaman: nidn = $nidn")
-//            },
-//                onAddDsn = {
-//                    navController.navigate(DestinasiHome.route)
-//                },
-//                modifier = modifier
-//            )
-//        }
-//
-//        //home matkul
-//        composable(
-//            route = DestinasiHomeMatKul.route
-//        ){
-//            HomeMatKulView(onDetailClick = {kode ->
-//                navController.navigate("${DestinasiHomeMatKul.route}/$kode")
-//                println("Pengelola Halaman: kode = $kode")
-//            },
-//                onAddMatKul = {
-//                    navController.navigate(DestinasiHome.route)
-//                },
-//                modifier = modifier
-//            )
-//        }
-
-        //insert dosen
-        composable(
-            route = DestinasiInsertDosen.route
-        ){
+        // Insert Dosen
+        composable(route = DestinasiInsertDosen.route) {
             InsertDosenView(
+                onBack = { navController.popBackStack() },
+                onNavigate = { navController.popBackStack() },
+                modifier = modifier
+            )
+        }
+
+        //home matkul
+        composable(route = DestinasiHomeMatKul.route) {
+            HomeMatKulView(
                 onBack = {
                     navController.popBackStack()
                 },
-                onNavigateToDosen = {
-                    navController.popBackStack()
+                onAddMatKul = {
+                    navController.navigate(DestinasiInsertMataKuliah.route)
+                },
+                onNavigateHome = {
+                    navController.navigate(DestinasiHome.route)
                 },
                 modifier = modifier
             )
         }
 
-        //insert matkul
-        composable(
-            route = DestinasiInsertMataKuliah.route
-        ){
+        // Insert Mata Kuliah
+        composable(route = DestinasiInsertMataKuliah.route) {
             InsertMatKulView(
-                onBack = {
-                    navController.popBackStack()
-                },
-                onNavigateInMatkul = {
-                    navController.popBackStack()
-                },
+                onBack = { navController.popBackStack() },
+                onNavigate = { navController.popBackStack() },
                 modifier = modifier
             )
         }
 
-        //update matkul
+        // Update Mata Kuliah
         composable(
             route = DestinasiUpdate.routesWithArg,
-            arguments = listOf(
-                navArgument(DestinasiUpdate.KODE){
-                    type = NavType.StringType
-                }
-            )
-        ){
+            arguments = listOf(navArgument(DestinasiUpdate.KODE) { type = NavType.StringType })
+        ) {
             val kode = it.arguments?.getString(DestinasiUpdate.KODE)
-            kode?.let { kodeValue ->
-            UpdateMatKulView(
-                onBack = {
-                    navController.popBackStack()
-                },
-                onNavigateUpMatkul = {
-                    navController.popBackStack()
-                },
-                modifier = modifier
-            )
+            kode?.let { kode ->
+                UpdateMatKulView(
+                    onBack = { navController.popBackStack() },
+                    onNavigate = { navController.popBackStack() },
+                    modifier = modifier
+                )
+            }
         }
 
-        //detail matkul
+        // Detail Mata Kuliah
         composable(
             route = DestinasiDetailMatKul.routeWithArg,
-            arguments = listOf(
-                navArgument(DestinasiDetailMatKul.KODE){
-                    type = NavType.StringType
-                }
-            )
-        ){
+            arguments = listOf(navArgument(DestinasiDetailMatKul.KODE) { type = NavType.StringType })
+        ) {
             val kode = it.arguments?.getString(DestinasiDetailMatKul.KODE)
-            kode?.let { kode ->
+            kode?.let { kodeValue ->
                 DetailMatKulView(
-                    onBack = {
-                        navController.popBackStack()
-                    },
-                    onEditClick = {
-                        navController.navigate("${DestinasiUpdate.route}/$it")
-                    },
-                    modifier = modifier,
-                    onDeleteClick = {
-                        navController.popBackStack()
-                    }
+                    onBack = { navController.popBackStack() },
+                    onEditClick = { navController.navigate("${DestinasiUpdate.route}/$kodeValue") },
+                    onDeleteClick = { navController.popBackStack() },
+                    modifier = modifier
                 )
             }
         }
     }
-}}
+}
 
