@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.view.matakuliah
+package com.ikhdaamel.ucp2.ui.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,14 +13,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.data.entity.MataKuliah
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.DetailMatKulViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulDetailUiState
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.toMataKuliahEntity
+import com.ikhdaamel.ucp2.ui.viewmodel.DetailMatKulViewModel
+import com.ikhdaamel.ucp2.ui.viewmodel.MatKulDetailUiState
+import com.ikhdaamel.ucp2.ui.viewmodel.toMataKuliahEntity
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
 import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
 
@@ -49,6 +47,8 @@ fun DetailMatKulView(
     onEditClick: (String) ->Unit = {},
     onDeleteClick: () -> Unit = {}
 ){
+    val detailUiState by viewModel.detailUiState.collectAsState()
+
     Scaffold (
         topBar = {
             TopAppBar(
@@ -69,7 +69,6 @@ fun DetailMatKulView(
             }
         }
     ) { innerPadding ->
-        val detailUiState by viewModel.detailUiState.collectAsState()
 
         BodyDetailMatKul(
             modifier = Modifier.padding(innerPadding),

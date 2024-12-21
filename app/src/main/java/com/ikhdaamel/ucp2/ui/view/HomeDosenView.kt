@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.view.matakuliah
+package com.ikhdaamel.ucp2.ui.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,13 +11,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,46 +35,48 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ikhdaamel.ucp2.data.entity.MataKuliah
+import com.ikhdaamel.ucp2.data.entity.Dosen
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
+import com.ikhdaamel.ucp2.ui.viewmodel.DosenViewModel
 import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.HomeMatKulUiState
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.HomeMatKulViewModel
+import com.ikhdaamel.ucp2.ui.viewmodel.HomeDosenUiState
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeMatKulView(
-    viewModel: HomeMatKulViewModel = viewModel (factory = PenyediaViewModel.Factory),
-    onAddMatKul: () -> Unit = {},
-    onDetailClick: (String) -> Unit = {},
+fun HomeDosenView(
+    onBack: () -> Unit,
+    onNavigateDosen: () -> Unit,
+    viewModel: DosenViewModel = viewModel(factory = PenyediaViewModel.Factory),
+    onAddDsn: () -> Unit = { },
+    onDetailClick: (String) -> Unit = { },
     modifier: Modifier = Modifier
 ){
     Scaffold (
         topBar = {
             TopAppBar(
-                judul = "Daftar Mata Kuliah",
+                judul = "Daftar Dosen",
                 showBackButton = false,
                 onBack = {}
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onAddMatKul,
+                onClick = onAddDsn,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(16.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Tambah Mata Kuliah"
+                    contentDescription = "Tambah Dosen"
                 )
             }
         }
     ){
         innerPadding ->
-        val homeMatKulUiState by viewModel.homeMatKulUiState.collectAsState()
+        val homeDosenUiState by viewModel.homeDosenUiState.collectAsState()
 
-        BodyHomMatKulView(
-            homeMatKulUiState = homeMatKulUiState,
+        BodyHomeDosenView(
+            homeDosenUiState = homeDosenUiState,
             onClick = {
                 onDetailClick(it)
             },
@@ -88,15 +86,15 @@ fun HomeMatKulView(
 }
 
 @Composable
-fun BodyHomMatKulView(
-    homeMatKulUiState: HomeMatKulUiState,
+fun BodyHomeDosenView(
+    homeDosenUiState: HomeDosenUiState,
     onClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ){
     val coroutineScope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-    when {
-        homeMatKulUiState.isLoading -> {
+    val snackbarHostState = remember {SnackbarHostState()}
+    when{
+        homeDosenUiState.isLoading -> {
             Box(
                 modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -104,22 +102,22 @@ fun BodyHomMatKulView(
                 CircularProgressIndicator()
             }
         }
-        homeMatKulUiState.isError -> {
-            LaunchedEffect(homeMatKulUiState.errorMessage) {
-                homeMatKulUiState.errorMessage?.let { message ->
+        homeDosenUiState.isError -> {
+            LaunchedEffect(homeDosenUiState.errorMessage) {
+                homeDosenUiState.errorMessage?.let{ message ->
                     coroutineScope.launch {
                         snackbarHostState.showSnackbar(message)
                     }
                 }
             }
         }
-        homeMatKulUiState.listMatKul.isEmpty() -> {
+        homeDosenUiState.listDosen.isEmpty() -> {
             Box (
                 modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ){
                 Text(
-                    text = "Tidak Ada Data Mata Kuliah",
+                    text = "Tidak Ada Data Dosen",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(16.dp)
@@ -127,8 +125,8 @@ fun BodyHomMatKulView(
             }
         }
         else -> {
-            ListMataKuliah(
-                listMatKul = homeMatKulUiState.listMatKul,
+            ListDosen(
+                listDosen = homeDosenUiState.listDosen,
                 onClick = {
                     onClick(it)
                     println(it)
@@ -140,19 +138,18 @@ fun BodyHomMatKulView(
 }
 
 @Composable
-fun ListMataKuliah(
-    listMatKul: List<MataKuliah>,
+fun ListDosen(
+    listDosen: List<Dosen>,
     modifier: Modifier = Modifier,
-    onClick: (String) -> Unit = {}
+    onClick: (String) -> Unit = { }
 ){
-    LazyColumn (modifier = modifier)
-    {
+    LazyColumn (modifier = modifier){
         items(
-            items = listMatKul,
-            itemContent = {matkul ->
-                CardMataKuliah(
-                    matkul = matkul,
-                    onClick = {onClick(matkul.kode)}
+            items = listDosen,
+            itemContent = { dsn ->
+                CardDosen(
+                    dsn = dsn,
+                    onClick = {onClick(dsn.nidn)}
                 )
             }
         )
@@ -161,30 +158,19 @@ fun ListMataKuliah(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardMataKuliah(
-    matkul : MataKuliah,
+fun CardDosen(
+    dsn : Dosen,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ){
-    Card (
+    Card(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
-    ){
-        Column (modifier = Modifier.fillMaxWidth()){
-            Row (
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Icon(imageVector = Icons.Filled.Info, contentDescription = "")
-                Spacer(modifier = Modifier.padding(4.dp))
-                Text(
-                    text = matkul.kode,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-            }
+            .padding()
+    ) {
+        Column (modifier = Modifier.padding(8.dp))
+        {
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -192,43 +178,7 @@ fun CardMataKuliah(
                 Icon(imageVector = Icons.Filled.AccountBox, contentDescription = "")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
-                    text = matkul.nama_mk,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-            }
-            Row (
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Icon(imageVector = Icons.Filled.List, contentDescription = "")
-                Spacer(modifier = Modifier.padding(4.dp))
-                Text(
-                    text = matkul.sks,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-            }
-            Row (
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Icon(imageVector = Icons.Filled.Star, contentDescription = "")
-                Spacer(modifier = Modifier.padding(4.dp))
-                Text(
-                    text = matkul.semester,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-            }
-            Row (
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Icon(imageVector = Icons.Filled.Favorite, contentDescription = "")
-                Spacer(modifier = Modifier.padding(4.dp))
-                Text(
-                    text = matkul.jenis,
+                    text = dsn.nidn,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
@@ -240,7 +190,19 @@ fun CardMataKuliah(
                 Icon(imageVector = Icons.Filled.Person, contentDescription = "")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
-                    text = matkul.dosenPengampu,
+                    text = dsn.nama,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+            }
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(imageVector = Icons.Filled.Face, contentDescription = "")
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(
+                    text = dsn.jeniKelamin,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )

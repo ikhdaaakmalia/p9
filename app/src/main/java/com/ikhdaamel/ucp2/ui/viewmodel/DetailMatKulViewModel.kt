@@ -1,6 +1,5 @@
-package com.ikhdaamel.ucp2.ui.viewmodel.matakuliah
+package com.ikhdaamel.ucp2.ui.viewmodel
 
-import androidx.core.app.NotificationCompat.MessagingStyle.Message
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -72,7 +71,7 @@ data class MatKulDetailUiState(
         get() = detailUiEvent != MataKuliahEvent()
 }
 
-fun MataKuliah.toDetailUiEvent(): MataKuliahEvent{
+fun MataKuliah.toDetailUiEvent(): MataKuliahEvent {
     return MataKuliahEvent(
         kode = kode,
         nama_mk = nama_mk,

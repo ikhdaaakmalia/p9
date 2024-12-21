@@ -6,11 +6,6 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.ikhdaamel.ucp2.KRSApp
-import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.dosen.HomeDosenViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.DetailMatKulViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MataKuliahViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.UpdateMatKulViewModel
 
 object PenyediaViewModel{
     val Factory = viewModelFactory {
@@ -21,7 +16,7 @@ object PenyediaViewModel{
             )
         }
         initializer {
-            HomeDosenViewModel(
+            DosenViewModel(
                 KRSApp().containerApp.repoDosen
             )
         }
