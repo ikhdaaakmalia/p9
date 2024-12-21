@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.viewmodel.dosen
+package com.ikhdaamel.ucp2.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,59 +7,100 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ikhdaamel.ucp2.data.entity.Dosen
 import com.ikhdaamel.ucp2.repository.RepoDosen
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class DosenViewModel(private val repoDosen: RepoDosen): ViewModel() {
-    var uiState by mutableStateOf(DosenUiState())
+    var homeUiState by mutableStateOf(HomeDosenUiState())
 
     fun updateState(dosenEvent: DosenEvent){
-        uiState = uiState.copy(
+        homeUiState = homeUiState.copy(
             dosenEvent = dosenEvent
         )
     }
 
     private fun validateFields(): Boolean {
-        val event = uiState.dosenEvent
+        val event = homeUiState.dosenEvent
         val errorState = DosenFormErrorState(
             nidn = if (event.nidn.isNotEmpty()) null else "NIDN harus diisi",
             nama = if (event.nama.isNotEmpty()) null else "Nama harus diisi",
             jeniKelamin = if (event.jeniKelamin.isNotEmpty()) null else "Jenis Kelamin harus diisi",
         )
-        uiState = uiState.copy(isEntryValid = errorState)
+        homeUiState = homeUiState.copy(isEntryValid = errorState)
         return errorState.isValid()
     }
 
     fun saveData(){
-        val currentEvent = uiState.dosenEvent
+        val currentEvent = homeUiState.dosenEvent
         if (validateFields()){
             viewModelScope.launch {
                 try {
                     repoDosen.insertDosen(currentEvent.toDosenEntity())
-                    uiState = uiState.copy(
+                    homeUiState = homeUiState.copy(
                         SnackBarMessage = "Data Tersimpan",
                         dosenEvent = DosenEvent(),
                         isEntryValid = DosenFormErrorState()
                     )
                 } catch (e: Exception) {
-                    uiState = uiState.copy(
+                    homeUiState = homeUiState.copy(
                         SnackBarMessage = "Data Tidak tersimpan"
                     )
                 }
             }
         } else {
-            uiState = uiState.copy(
+            homeUiState = homeUiState.copy(
                 SnackBarMessage = "Input Tidak Valid, Periksa Data"
             )
         }
     }
     fun resetSnackBarMessage(){
-        uiState = uiState.copy(SnackBarMessage = null)
+        homeUiState = homeUiState.copy(SnackBarMessage = null)
     }
+
+    val homeDosenUiState: StateFlow<HomeDosenUiState> = repoDosen.getAllDosen()
+        .filterNotNull()
+        .map {
+            HomeDosenUiState(
+                listDosen = it.toList(),
+                isLoading = false
+            )
+        }
+        .onStart {
+            emit(HomeDosenUiState(isLoading = true))
+            delay(900)
+        }
+        .catch{
+            emit(
+                HomeDosenUiState(
+                    isLoading = false,
+                    isError = true,
+                    errorMessage = it.message ?: "terjadi Kesalahan"
+                )
+            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = HomeDosenUiState(
+                isLoading = true,
+            )
+        )
 }
 
-data class DosenUiState(
+data class HomeDosenUiState(
+    val listDosen: List<Dosen> = listOf(),
     val dosenEvent: DosenEvent = DosenEvent(),
     val isEntryValid: DosenFormErrorState = DosenFormErrorState(),
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
+    val errorMessage: String = "",
     val SnackBarMessage: String? = null,
 )
 
