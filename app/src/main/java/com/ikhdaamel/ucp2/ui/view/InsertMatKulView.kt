@@ -1,4 +1,4 @@
-package com.ikhdaamel.ucp2.ui.view.matakuliah
+package com.ikhdaamel.ucp2.ui.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
@@ -36,25 +35,25 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ikhdaamel.ucp2.ui.customwidget.TopAppBar
 import com.ikhdaamel.ucp2.ui.viewmodel.PenyediaViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.dosen.DosenViewModel
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulFormErrorState
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MatKulUiState
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MataKuliahEvent
-import com.ikhdaamel.ucp2.ui.viewmodel.matakuliah.MataKuliahViewModel
+import com.ikhdaamel.ucp2.ui.viewmodel.DosenViewModel
+import com.ikhdaamel.ucp2.ui.viewmodel.MatKulFormErrorState
+import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahEvent
+import com.ikhdaamel.ucp2.ui.viewmodel.MataKuliahViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun InsertMatKulView(
     onBack: () -> Unit,
-    onNavigate: () -> Unit,
+    onNavigateInMatkul: () -> Unit,
+    onAddMataKuliah: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: MataKuliahViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val uiState = viewModel.uiState
     val SnackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-    LaunchedEffect(uiState.SnackBarMessage) {
-        uiState.SnackBarMessage?.let { message: String ->
+    LaunchedEffect(uiState.snackBarMessage) {
+        uiState.snackBarMessage?.let { message: String ->
             coroutineScope.launch {
                 SnackbarHostState.showSnackbar(message)
                 viewModel.resetSnackBarMessage()
@@ -77,43 +76,19 @@ fun InsertMatKulView(
                 showBackButton = true,
                 judul = "Tambah Mata Kuliah"
             )
-            InsertBodyMatKul(
-                uiState = uiState,
-                onValueChange = {updateEvent ->
-                    viewModel.updateState(updateEvent)
-                },
-                onClick = {
-                    viewModel.saveData()
-                    onNavigate()
-                }
+            FormMataKuliah(
+                mataKuliahEvent = uiState.mataKuliahEvent,
+                onValueChange = {viewModel.updateState(it)},
+                errorState = uiState.isEntryValid,
+                modifier = Modifier.fillMaxWidth()
             )
-        }
-    }
-}
-
-@Composable
-fun InsertBodyMatKul(
-    modifier: Modifier = Modifier,
-    onValueChange: (MataKuliahEvent) -> Unit,
-    uiState: MatKulUiState,
-    onClick: () -> Unit
-){
-    Column (
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment =  Alignment.CenterHorizontally
-    ){
-        FormMataKuliah(
-            mataKuliahEvent = uiState.mataKuliahEvent,
-            onValueChange = onValueChange,
-            errorState = uiState.isEntryValid,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Button(
-            onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text("Simpan")
+            Button(
+                onClick = {viewModel.saveData()
+                          onNavigateInMatkul()},
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Simpan")
+            }
         }
     }
 }
@@ -129,9 +104,10 @@ fun FormMataKuliah(
     viewModel: DosenViewModel = viewModel()
 ){
     val sks = listOf("1", "2", "3")
-    val semester = listOf("1", "3", "5", "7")
+    val semester = listOf("ganjil", "genap")
     val jenis = listOf("wajib", "peminatan")
-    val dosenPengampu = listOf("Arif, S.Kom.,M.Kom", "Junaedi S.Kom.,M.Kom., Ph.d", "Wawan S.Kom., M.Kom,")
+    //val homeDosenUiState by viewModel.HomeDosenUiState.collectAsState(initial = empty())
+    //val listDosen = homeDosenUiState.listDosen.map{it.nama}
 
     var expanded by remember { mutableStateOf(false) }
     var selectedDosen by remember { mutableStateOf("") }
@@ -258,20 +234,24 @@ fun FormMataKuliah(
                 },
                 isError = errorState.kode != null
             )
-            ExposedDropdownMenu(
+            ExposedDropdownMenuBox(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onExpandedChange = { expanded = !expanded }
             ) {
-                dosenPengampu.forEach { dosen ->
-                    DropdownMenuItem(
-                        text = { Text(dosen) },
-                        onClick = {
-                            selectedDosen = dosen
-                            onValueChange(mataKuliahEvent.copy(kode = dosen)) // Update state
-                            expanded = false
-                        }
-                    )
-                }
+                OutlinedTextField(
+                    value = selectedDosen,
+                    onValueChange = {},
+                    readOnly = true,
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth(),
+                    label = { Text("Dosen pengampu") },
+                    placeholder = { Text("Pilih Dosen") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    isError = errorState.kode != null
+                )
             }
             Text(
                 text = errorState.kode ?: "",
