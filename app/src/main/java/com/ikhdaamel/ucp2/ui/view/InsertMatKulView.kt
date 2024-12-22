@@ -49,8 +49,8 @@ fun InsertMatKulView(
     modifier: Modifier = Modifier,
     viewModel: MataKuliahViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
-    val uiState = viewModel.uiState
-    val SnackbarHostState = remember { SnackbarHostState() }
+    val uiState = viewModel.MataKulUiState
+    val SnackbarHostState = remember { snackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(uiState.snackBarMessage) {
         uiState.snackBarMessage?.let { message: String ->

@@ -21,7 +21,7 @@ object DestinasiHomeMatKul : AlamatNavigasi {
 }
 
 object DestinasiInsertMataKuliah : AlamatNavigasi {
-    override val route = "Insert_Mata_Kuliah" // Menghilangkan spasi
+    override val route = "Insert_Mata_Kuliah"
 }
 
 object DestinasiUpdate : AlamatNavigasi {

@@ -7,28 +7,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ikhdaamel.ucp2.data.entity.MataKuliah
 import com.ikhdaamel.ucp2.repository.RepoMataKuliah
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-
 class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel(){
-    var uiState by mutableStateOf(HomeMataKulUiState())
+    var barangUiState by mutableStateOf(MataKulUiState())
 
     fun updateState (mataKuliahEvent: MataKuliahEvent) {
-        uiState = uiState.copy(
+        barangUiState = barangUiState.copy(
             mataKuliahEvent = mataKuliahEvent
         )
     }
 
     private fun validateFields(): Boolean{
-        val event = uiState.mataKuliahEvent
+        val event = barangUiState.mataKuliahEvent
         val errorState = MatKulFormErrorState(
             kode = if (event.kode.isNotEmpty()) null else "Kode harus diisi",
             nama_mk = if (event.nama_mk.isNotEmpty()) null else "Nama Mata Kuliah harus diisi",
@@ -37,73 +28,40 @@ class MataKuliahViewModel(private val repoMataKuliah: RepoMataKuliah): ViewModel
             jenis = if (event.jenis.isNotEmpty()) null else "Jenis Mata Kuliah harus diisi",
             dosenPengampu = if (event.dosenPengampu.isNotEmpty()) null else "Dosen Pengampu harus diisi",
         )
-        uiState = uiState.copy(isEntryValid = errorState)
+        barangUiState = barangUiState.copy(isEntryValid = errorState)
         return errorState.isValid()
     }
 
     fun saveData() {
-        val currentEvent = uiState.mataKuliahEvent
+        val currentEvent = barangUiState.mataKuliahEvent
         if (validateFields()) {
             viewModelScope.launch {
                 try {
                     repoMataKuliah.insertMataKuliah(currentEvent.toMataKuliahEntity())
-                    uiState = uiState.copy(
+                    barangUiState = barangUiState.copy(
                         snackBarMessage = "Data Tersimpan",
                         mataKuliahEvent = MataKuliahEvent(),
                         isEntryValid = MatKulFormErrorState()
                     )
                 } catch (e: Exception) {
-                    uiState = uiState.copy(
+                    barangUiState = barangUiState.copy(
                         snackBarMessage = "Data Tidak tersimpan"
                     )
                 }
             }
         } else {
-            uiState = uiState.copy(
+            barangUiState = barangUiState.copy(
                 snackBarMessage = "Input Tidak Valid, Periksa Data"
             )
         }
     }
 
     fun resetSnackBarMessage() {
-        uiState = uiState.copy(snackBarMessage = null)
+        barangUiState = barangUiState.copy(snackBarMessage = null)
     }
-
-    val homeMatKulUiState: StateFlow<HomeMataKulUiState> = repoMataKuliah.getAllMataKuliah()
-        .filterNotNull()
-        .map {
-            HomeMataKulUiState(
-                listMatKul = it.toList(),
-                isLoading = false
-            )
-        }
-        .onStart {
-            emit(HomeMataKulUiState(isLoading = true))
-            delay(900)
-        }
-        .catch{
-            emit(
-                HomeMataKulUiState(
-                    isLoading = false,
-                    isError = true,
-                    errorMessage = it.message ?: "terjadi Kesalahan"
-                )
-            )
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = HomeMataKulUiState(
-                isLoading = true,
-            )
-        )
 }
 
-data class HomeMataKulUiState(
-    val listMatKul: List<MataKuliah> = listOf(),
-    val isLoading: Boolean =false,
-    val isError: Boolean = false,
-    val errorMessage: String ="",
+data class MataKulUiState(
     val mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
     val isEntryValid: MatKulFormErrorState = MatKulFormErrorState(),
     val snackBarMessage: String? = null,

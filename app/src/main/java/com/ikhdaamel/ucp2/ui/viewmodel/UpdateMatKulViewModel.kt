@@ -13,16 +13,11 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-//data class MatKulUiState(
-//    val mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
-//    val isEntryValid: MatKulFormErrorState = MatKulFormErrorState(),
-//    val SnackBarMessage: String? = null
-//)
 class UpdateMatKulViewModel (
     savedStateHandle: SavedStateHandle,
     private val repoMataKuliah: RepoMataKuliah
 ): ViewModel() {
-    var updateUiState by mutableStateOf(HomeMataKulUiState())
+    var updateUiState by mutableStateOf(MataKulUiState())
         private set
     private val _kode: String = checkNotNull(savedStateHandle[DestinasiUpdate.KODE])
 
@@ -85,6 +80,6 @@ class UpdateMatKulViewModel (
     }
 }
 
-fun MataKuliah.toUiStateMatKul() : HomeMataKulUiState = HomeMataKulUiState(
+fun MataKuliah.toUiStateMatKul() : MataKulUiState = MataKulUiState(
     mataKuliahEvent = this.toDetailUiEvent()
 )

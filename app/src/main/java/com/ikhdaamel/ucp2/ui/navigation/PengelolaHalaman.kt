@@ -105,10 +105,10 @@ fun PengelolaHalaman(
             arguments = listOf(navArgument(DestinasiDetailMatKul.KODE) { type = NavType.StringType })
         ) {
             val kode = it.arguments?.getString(DestinasiDetailMatKul.KODE)
-            kode?.let { kodeValue ->
+            kode?.let { kode ->
                 DetailMatKulView(
                     onBack = { navController.popBackStack() },
-                    onEditClick = { navController.navigate("${DestinasiUpdate.route}/$kodeValue") },
+                    onEditClick = { navController.navigate("${DestinasiUpdate.route}/$kode") },
                     onDeleteClick = { navController.popBackStack() },
                     modifier = modifier
                 )
